@@ -12,14 +12,28 @@
 
 .one-project
 	padding-bottom 100px
-	
+	.grid-container-control
+		box-shadow 0 0 1px black
+		overflow auto
+		padding 30px 0
+		margin 30px 0
+		& .control
+			margin-left: 8px;
+			display: inherit;
+			margin-top: 5px;
+			margin-bottom: -30px;
+			position: relative;
+			z-index: 2;
+			& + .control
+				margin-left: 200px
+
 	&__content div
 		overflow auto
-
 	&__page-date
 	&__page-title
 	&__content p
 	&__content img
+	&__content .control
 		margin-top 10px
 		margin-bottom 20px
 		width 1000px
@@ -31,6 +45,29 @@
 			width 95%
 			margin-left 2%
 
+
+	&__content .control
+		cursor pointer
+		width 150px
+		color: #fff;
+		background-color: #2BBBAD;
+		padding: 3px 7px 3px 7px;
+		font-weight 500
+		margin-top 0
+		margin-bottom 0
+		text-transform uppercase
+		font-size 11px
+		border-radius: 2px;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+		&.remove_img
+			background-color: #E53935
+		&:hover
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 2px 15px 0 rgba(0, 0, 0, 0.2);
+		&:before
+			content: '+ '
+
+	&__content .control + .control
+		margin-left 10px
 
 	&__content
 		h1
@@ -87,7 +124,6 @@
 		@media $mobile
 			width 100%
 		img
-			float left !important
 			margin 2px 3px !important
 			width 100% !important
 		

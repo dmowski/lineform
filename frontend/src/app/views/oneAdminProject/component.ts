@@ -20,13 +20,14 @@ interface helpData {
 
 export class oneAdminProjectViewAppComponent {
 	project: project;
+	contentElement: any;
 
 	@Input() simple: boolean;
 	@Input() projectData: project;
 	public config: any;
 	ngOnInit() {
-		var doc = document.getElementById('startPageComponent');
-		doc.style.height = window.innerHeight + 'px';
+		/*var doc = document.getElementById('startPageComponent');
+		doc.style.height = window.innerHeight + 'px';*/
 		if (this.simple && this.projectData) {
 			this.project = this.projectData;
 		} else {
@@ -50,6 +51,58 @@ export class oneAdminProjectViewAppComponent {
 			this.projectHelper.text = target.src;
 			this.projectHelper.hideImg = false;
 		}
+	}
+
+	getArrayFromContainer(query) {
+		return Array.prototype.filter.call(this.contentElement.querySelectorAll(query), n => true);
+	}
+
+	addControls(content) {
+		this.contentElement = content;
+		this.removeControls(content);
+		function createControlButton(className, text) {
+			var control = document.createElement('span');
+			control.classList.add('control');
+			control.classList.add(className);
+			control.textContent = text;
+			return control;
+		}
+
+		var grids = this.getArrayFromContainer('.grid').forEach((grid)=>{
+			grid.classList.add('grid-container-control');
+		});
+
+		let beforeInsterItems = [
+			...this.getArrayFromContainer('p'),
+			...this.getArrayFromContainer('h1'),
+			...this.getArrayFromContainer('h2'),
+			...this.getArrayFromContainer('img')
+		];
+
+		beforeInsterItems.forEach((textNode) => {
+			if (textNode.closest('.grid-part')) {
+				return;
+			}
+
+			textNode.before(createControlButton('add_full_img', 'Картинка'));
+			textNode.before(createControlButton('add_p', 'Текст'));
+		});
+
+		this.getArrayFromContainer('.grid-part img').forEach((imgNode)=> {
+			imgNode.before(createControlButton('add_img', 'Картинка'));
+			imgNode.before(createControlButton('remove_img', 'Удалить эту'));
+		})
+	}
+
+	removeControls(content) {
+		this.contentElement = content;
+		var grids = this.getArrayFromContainer('.grid').forEach((grid)=>{
+			grid.classList.remove('grid-container-control');
+		});
+
+		this.getArrayFromContainer('.control').forEach((controlElement)=>{
+			controlElement.remove();
+		});
 	}
 
 	saveText(content) {
