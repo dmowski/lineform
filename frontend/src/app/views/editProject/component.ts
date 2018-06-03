@@ -20,13 +20,17 @@ export class editProjectAppComponent {
 			this.project.title = '';
 		}
 	}
-
-	tabSwitch(showBlock, hideBlock, hideBlock2) {
+	tabSwitch(showBlock, hideBlock, hideBlock2, previewBlockComponent, needShowControls?) {
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 		showBlock.style.display = 'block';
 		hideBlock.style.display = 'none';
 		hideBlock2.style.display = 'none';
+		if (needShowControls) {
+			previewBlockComponent.addControls();
+		} else {
+			previewBlockComponent.removeControls();
+		}
 	}
 
 	addInfoBlock() {

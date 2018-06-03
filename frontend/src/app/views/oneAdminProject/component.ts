@@ -21,6 +21,7 @@ interface helpData {
 export class oneAdminProjectViewAppComponent {
 	project: project;
 	contentElement: any;
+	content: any;
 
 	@Input() simple: boolean;
 	@Input() projectData: project;
@@ -53,13 +54,19 @@ export class oneAdminProjectViewAppComponent {
 		}
 	}
 
-	getArrayFromContainer(query) {
-		return Array.prototype.filter.call(this.contentElement.querySelectorAll(query), n => true);
+	getTextLikeDocument() {
+		var content = document.createElement('div')
+		content.innerHTML = this.project.text;
+		return content;
 	}
 
-	addControls(content) {
-		this.contentElement = content;
-		this.removeControls(content);
+	getArrayFromContainer(content, query) {
+		return Array.prototype.filter.call(content.querySelectorAll(query), n => true);
+	}
+
+	addControls() {
+		this.removeControls();
+		var content = this.getTextLikeDocument();
 		function createControlButton(className, text) {
 			var control = document.createElement('span');
 			control.classList.add('control');
@@ -68,15 +75,15 @@ export class oneAdminProjectViewAppComponent {
 			return control;
 		}
 
-		var grids = this.getArrayFromContainer('.grid').forEach((grid)=>{
+		var grids = this.getArrayFromContainer(content, '.grid').forEach((grid)=>{
 			grid.classList.add('grid-container-control');
 		});
 
 		let beforeInsterItems = [
-			...this.getArrayFromContainer('p'),
-			...this.getArrayFromContainer('h1'),
-			...this.getArrayFromContainer('h2'),
-			...this.getArrayFromContainer('img')
+			...this.getArrayFromContainer(content, 'p'),
+			...this.getArrayFromContainer(content, 'h1'),
+			...this.getArrayFromContainer(content, 'h2'),
+			...this.getArrayFromContainer(content, 'img')
 		];
 
 		beforeInsterItems.forEach((textNode) => {
@@ -88,21 +95,25 @@ export class oneAdminProjectViewAppComponent {
 			textNode.before(createControlButton('add_p', 'Текст'));
 		});
 
-		this.getArrayFromContainer('.grid-part img').forEach((imgNode)=> {
+		this.getArrayFromContainer(content, '.grid-part img').forEach((imgNode)=> {
 			imgNode.before(createControlButton('add_img', 'Картинка'));
 			imgNode.before(createControlButton('remove_img', 'Удалить эту'));
-		})
+		});
+
+		this.project.text = content.innerHTML;
 	}
 
-	removeControls(content) {
-		this.contentElement = content;
-		var grids = this.getArrayFromContainer('.grid').forEach((grid)=>{
+	removeControls() {
+		var content = this.getTextLikeDocument();
+
+		var grids = this.getArrayFromContainer(content, '.grid').forEach((grid)=>{
 			grid.classList.remove('grid-container-control');
 		});
 
-		this.getArrayFromContainer('.control').forEach((controlElement)=>{
+		this.getArrayFromContainer(content, '.control').forEach((controlElement)=>{
 			controlElement.remove();
 		});
+		this.project.text = content.innerHTML;
 	}
 
 	saveText(content) {

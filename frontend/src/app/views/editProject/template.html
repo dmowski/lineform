@@ -5,14 +5,14 @@
 
 	<div class="edit-project__tabs">
 		<a 
-			(click)="tabSwitch(editBlock, previewBlock, editTextBlock)"
+			(click)="tabSwitch(editBlock, previewBlock, editTextBlock, previewBlockComponent)"
 			[ngClass]="{'edit-project__tab': true, 'edit-project__tab--active': (editBlock.style.display == 'block')}">Общая информация</a>
 		<a 
-			(click)="tabSwitch(previewBlock, editBlock, editTextBlock)"
+			(click)="tabSwitch(previewBlock, editBlock, editTextBlock, previewBlockComponent, true);"
 			[ngClass]="{'edit-project__tab': true, 'edit-project__tab--active': (previewBlock.style.display == 'block')}">Содержание</a>
 
 		<a 
-			(click)="tabSwitch(editTextBlock, editBlock, previewBlock)"
+			(click)="tabSwitch(editTextBlock, editBlock, previewBlock, previewBlockComponent)"
 			[ngClass]="{'edit-project__tab': true, 'edit-project__tab--active': (editTextBlock.style.display == 'block')}">html</a>
 
 		<a (click)="deleteProject()" class="edit-project__tab edit-project__tab--right">Удалить проект</a>
@@ -102,7 +102,7 @@
 	</div>
 
 	<div class="edit-project__view-mode" style="display: none" #previewBlock>
-		<one-admin-project simple="true" [projectData]="project"></one-admin-project>
+		<one-admin-project simple="true" #previewBlockComponent [projectData]="project"></one-admin-project>
 	</div>
 
 	<a (click)="saveProject()" class="edit-project__save-or-update-btn">+</a>
